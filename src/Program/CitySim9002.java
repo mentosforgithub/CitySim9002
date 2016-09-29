@@ -21,6 +21,7 @@ public class CitySim9002 {
         else {
             System.out.println(errorMessage);
             return -1;
+            for testing we add some errors;
         }
     }
 }
