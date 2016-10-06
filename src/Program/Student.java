@@ -10,11 +10,6 @@ package Program;
  * @author hment
  */
 public class Student{
-            /*public boolean SquirrelHill = true;
-            public boolean Downtown = true;
-            static boolean ThePoint = true;
-            static boolean CathedralofLearning = false;*/
-        
         public String preference(String str){
             String result;
             switch(str){

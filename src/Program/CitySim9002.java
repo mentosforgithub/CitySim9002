@@ -15,31 +15,6 @@ import java.util.Random;
 public class CitySim9002 {
     public static String errorMessage = "Please enter one integer argument, seed";
     
-    public static String getMessage(String str1, String str2){ //get messages of different visitors and their preferences
-            String result;
-            switch(str1){
-                case "Student":
-                    Student s = new Student();
-                    result= s.preference(str2);
-                    break;
-                case "Professor":
-                    Professor p = new Professor();
-                    result = p.preference(str2);
-                    break;
-                case "BusinessPerson":
-                    BusinessPerson bp =new BusinessPerson();
-                    result = bp.preference(str2);
-                    break;
-                case "Blogger":
-                    Blogger b = new Blogger();
-                    result=b.preference(str2);
-                    break;
-                default:
-                    result="error in getMessage method!";
-            }
-            return result;
-        }
-    
     public static String GenerateVisitor(Random r,String[] s){
         String result;
         int index = r.nextInt(s.length);
@@ -66,14 +41,20 @@ public class CitySim9002 {
             
             for(int a=1;a<=5;a++){
                 String visitor = GenerateVisitor(random_visitors,visitors);
-                 //String visitor = visitors[random_visitors.nextInt(visitors.length)];
                  int iteration = random_iterations.nextInt(Integer.SIZE-1);//to generate only positive integer,from stackoverflow
                  System.out.println("Visitor "+a+" is a "+visitor);
                  for(int i=1; i<=iteration;i++){     
-                     String place = GeneratePlace(random_places,places);
-                    //String place = places[random_places.nextInt(places.length)];//generate the random place
+                     //Generate classes
+                     Student s =new Student();
+                     Professor p= new Professor();
+                     BusinessPerson bp = new BusinessPerson();
+                     Blogger b =new Blogger();
+                     GetMessage g = new GetMessage(s,p,bp,b);
+                     
+                    String place = GeneratePlace(random_places,places);
                     System.out.println("Visitor "+a+" is going to "+place);
-                    String message1 = getMessage(visitor,place);
+                    System.out.println(place);
+                    String message1 = g.getMessage(visitor,place);
                     System.out.println("Visitor "+a+" "+message1);
                     if (place.equals("leave") || (i==iteration))
                     {

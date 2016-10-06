@@ -25,17 +25,34 @@ public class GetMessageTest {
     Professor mock_p = mock(Professor.class);
     BusinessPerson mock_bp = mock(BusinessPerson.class);
     Blogger mock_b = mock(Blogger.class);
+  
+    
+    /***Since we are doing unit testing, the preference() method should be tested in another testing(PreferenceInClasses),
+     * We shall test GetMessage with place equals to Squirrel Hill.
+     */
+    @Test
+    public void GetMessageWorkswithDifferentPeople(){ 
+        GetMessage test_g = new GetMessage(mock_s,mock_p,mock_bp,mock_b);
+        
+        //stubbing methods
+        when(mock_s.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_p.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_bp.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_b.preference("Squirrel Hill") ).thenReturn("did not like Squirrel Hill.");
+        
+        Assert.assertEquals(test_g.getMessage("Student", "Squirrel Hill"), "did like Squirrel Hill!");
+        Assert.assertEquals(test_g.getMessage("Blogger", "Squirrel Hill"), "did not like Squirrel Hill.");
+    }
     
     @Test
-    public void GetMessageWorkswithDifferentPeople(){
-        /**Because this is a unit testing,we don't care what will the preference function will return in this testing, so we give it a default message**/
-        when(mock_s.preference(anyString())).thenReturn("did like Squirrel Hill!");
-        when(mock_p.preference(anyString())).thenReturn("did like Squirrel Hill!");
-        when(mock_bp.preference(anyString())).thenReturn("did not like Squirrel Hill.");
-        when(mock_b.preference(anyString())).thenReturn("did not like Squirrel Hill.");
-        
-        CitySim9002.getMessage("Student", str2)
-        Assert.assertEquals((CitySim9002.getMessage("Student", "Squirrel Hill")), );
-        
+    public void GetMessageWrongInput(){
+         GetMessage test_g = new GetMessage(mock_s,mock_p,mock_bp,mock_b);
+         
+         //stubbing methods
+         when(mock_s.preference("")).thenReturn("error! no suitable input!");
+         when(mock_p.preference("123")).thenReturn("error! no suitable input!");
+          
+          Assert.assertEquals(test_g.getMessage("Student", ""), "error! no suitable input!");
+          Assert.assertEquals(test_g.getMessage("Professor", "123"), "error! no suitable input!");
     }
 }
