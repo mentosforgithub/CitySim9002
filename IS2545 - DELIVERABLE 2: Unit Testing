@@ -17,6 +17,8 @@ References:
 http://stackoverflow.com/questions/5827023/java-random-giving-negative-numbers
 http://aoyouzi.iteye.com/blog/2289632
 
+Successfully passed the TravisCI test.
+
 Unit Test core code:
 
 1. Unit Test-GeneratePlace
