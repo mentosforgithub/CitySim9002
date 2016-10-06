@@ -1,6 +1,23 @@
 Problems And Chanllenges:
+1. Dependency Injection
+I worte a static method outside the main method to achieve returning a correct message according to different imput visitors. But I found it will be hard to 
+do a unit test of this method. Because I can't mock a class which is initiated inside the method. The original code broke the principle of 
+dependency injection. With the help of professor Iser, I fixed the code and built another class. Inside the class I used the 4 objects of the 
+visitor classes as parameters to the initiate function. This is a new class with dependency injection. And mock is able to use to test this class.
+2.How to do unit test for methods that inside the main function?
+I do the iterations inside the main function. But I find it's hard to do a unit testing for counting times of the iteration or checking the 
+break condition. I think we can achieve this by system testing.
+3.AnyInt, AnyString in Mockito
+The anyInt, anyString methods in Mockito is a very useful method to mock an input.
+4.More about Junit and Mockito
+In this assignment, I just tried assert and mock in unit testing. There are still lots of methods in Junit and Mockito like verify and runner.
+It would be great to go deeper in Junit and Mockito from tutorials.
 
+References:
+http://stackoverflow.com/questions/5827023/java-random-giving-negative-numbers
+http://aoyouzi.iteye.com/blog/2289632
 
+Unit Test core code:
 
 1. Unit Test-GeneratePlace
 @Mock
@@ -13,6 +30,7 @@ Problems And Chanllenges:
         when(mock_random.nextInt(length)).thenReturn(0);
         Assert.assertEquals(CitySim9002.GenerateVisitor(mock_random, s), "The Cathedral of Learning");//correctly worked
         Assert.assertNotEquals(CitySim9002.GenerateVisitor(mock_random, s), "leave");//sad path
+        
  2. Unit Test- GenerateVisitor
  @Mock
             Random mock_random = mock(Random.class);
@@ -25,7 +43,41 @@ Problems And Chanllenges:
         
         Assert.assertEquals(CitySim9002.GenerateVisitor(mock_random, s), "BusinessPerson");
         Assert.assertNotEquals(CitySim9002.GenerateVisitor(mock_random, s), "Student");//sad path
-3. Unit Test- Preference(in 4 classes)
+        
+3. Unit Test- GetMessage
+@Mock
+    Student mock_s = mock(Student.class);
+    Professor mock_p = mock(Professor.class);
+    BusinessPerson mock_bp = mock(BusinessPerson.class);
+    Blogger mock_b = mock(Blogger.class);
+    
+@Test
+    public void GetMessageWorkswithDifferentPeople(){ 
+        GetMessage test_g = new GetMessage(mock_s,mock_p,mock_bp,mock_b);
+        
+        //stubbing methods
+        when(mock_s.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_p.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_bp.preference("Squirrel Hill") ).thenReturn("did like Squirrel Hill!");
+        when(mock_b.preference("Squirrel Hill") ).thenReturn("did not like Squirrel Hill.");
+        
+        Assert.assertEquals(test_g.getMessage("Student", "Squirrel Hill"), "did like Squirrel Hill!");
+        Assert.assertEquals(test_g.getMessage("Blogger", "Squirrel Hill"), "did not like Squirrel Hill.");
+    }
+    
+    @Test
+    public void GetMessageWrongInput(){
+         GetMessage test_g = new GetMessage(mock_s,mock_p,mock_bp,mock_b);
+         
+         //stubbing methods
+         when(mock_s.preference("")).thenReturn("error! no suitable input!");
+         when(mock_p.preference("123")).thenReturn("error! no suitable input!");
+          
+          Assert.assertEquals(test_g.getMessage("Student", ""), "error! no suitable input!");
+          Assert.assertEquals(test_g.getMessage("Professor", "123"), "error! no suitable input!");
+    }
+    
+4. Unit Test- Preference(in 4 classes)
 Student test_S = new Student();
     Professor test_p = new Professor();
     BusinessPerson test_bp = new BusinessPerson();
